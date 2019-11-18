@@ -1,0 +1,4 @@
+FROM node:12.13.0
+WORKDIR /frontend
+COPY . /frontend
+CMD ["npm", "run", "start"]

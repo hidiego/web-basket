@@ -1,0 +1,4 @@
+FROM node:12.8.1
+WORKDIR /backend
+COPY . .
+CMD ["npm", "run", "start-dev"]

@@ -1,0 +1,42 @@
+version: '3'
+services:
+  fronted-dev:
+    image: leones/frontend-dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 4200:4200
+    container_name: frontend-dev
+    volumes:
+      - ./frontend:/frontend
+    depends_on:
+      - backend-dev
+
+  db:
+    image: leones/db
+    build: ./db
+    container_name: db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: example
+
+  backend-dev:
+    image: leones/backend-dev
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend:/backend
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=example
+    container_name: backend-dev
