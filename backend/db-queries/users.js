@@ -1,7 +1,7 @@
 const db = require('../db-connector');
 
 function getall() {
-  return db.one(`select * from users`);
+  return db.many(`select * from users`);
 }
 
 module.exports = {
