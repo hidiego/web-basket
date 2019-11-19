@@ -1,13 +1,14 @@
 frontend:
-	docker-compose up --build -d --force-recreate bimtrust-db
+	docker-compose up --build -d --force-recreate frontend
 
 backend:
 	docker-compose up -d --force-recreate backend
 
 db:
-	docker-compose up --build -d --force-recreate bimtrust-db
+	docker-compose up --build -d --force-recreate db
 
-leones: frontend backend db
+leones: 
+	docker-compose up -d
 
 leones-down:
 	docker-compose down --volumes --remove-orphan

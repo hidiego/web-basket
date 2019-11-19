@@ -1,0 +1,17 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <input
+    formControlName="email"
+    type="text"
+    placeholder="Usuario"
+    style="display: block;"
+  />
+  <input
+    formControlName="password"
+    type="password"
+    placeholder="Contraseña"
+    style="display: block;"
+  />
+  <button type="submit" [disabled]="!loginForm.valid">Entrar</button>
+</form>
+
+<p>Form Status: {{ loginForm.status }}</p>
