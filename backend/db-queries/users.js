@@ -1,16 +1,21 @@
 const db = require('../db-connector');
 
-function getall() {
-  return db.many(`select id, email, reg_date from users`);
+function getAll() {
+  return db.many(
+    `select id, name, lastName, email, reg_date, birthDate from users`
+  );
 }
 
-function insertUser(email, password) {
-  return db.none(
-    `insert into users(email, password) values (${email},${password})`
+function register(email, password, name, lastName, birthDate) {
+  return db.one(
+    `INSERT INTO users (email, password, name, lastName, birthDate) \
+    VALUES ('${email}', '${password}', '${name}',' ${lastName}', '${birthDate}') \
+    returning id, email, name, lastName, birthDate;`
   );
 }
 
 module.exports = {
   //USER QUERIES
-  getall
+  getAll,
+  register
 };
