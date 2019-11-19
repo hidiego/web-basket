@@ -7,6 +7,9 @@ backend:
 db:
 	docker-compose up --build -d --force-recreate db
 
+db-build:
+	docker-compose build db
+
 leones: 
 	docker-compose up -d
 
@@ -18,3 +21,4 @@ leones-dev:
 
 leones-dev-down:
 	docker-compose -f docker-compose-dev.yml down --volumes --remove-orphan
+
