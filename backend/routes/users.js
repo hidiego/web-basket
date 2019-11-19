@@ -4,6 +4,7 @@ var db = require('../db-queries/users');
 var pg = require('../utils/passwordGenerator');
 var bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
+var auth = require('../middleware/auth');
 
 /* GET users listing. */
 router.get('/all', async (req, res, next) => {
@@ -45,7 +46,7 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.post('/register', async (req, res, next) => {
+router.post('/register', auth, async (req, res, next) => {
   try {
     let { email, name, lastName, birthDate } = req.body;
     email = email.toLowerCase();
@@ -63,7 +64,7 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
-router.get('/getUser/:email', async (req, res, next) => {
+router.get('/getUser/:email', auth, async (req, res, next) => {
   try {
     var email = req.params.email;
     user = await db.getUser(email);
