@@ -3,21 +3,26 @@
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu_open</mat-icon>
     </button>
-    <mat-list role="list" (click)="sidenav.toggle()">
+    <mat-list role="list" (click)="sidenav.toggle()" *ngIf="isAuth">
+      <mat-list-item>
+        <span routerLink="/dashboard" routerLinkActive="active">Dashboard</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span routerLink="/register" routerLinkActive="active">Registrar</span>
+      </mat-list-item>
+      <mat-list-item (click)="onLogout(); sidenav.close()">
+        <span>Logout</span>
+      </mat-list-item>
+    </mat-list>
+    <mat-list role="list" (click)="sidenav.toggle()" *ngIf="!isAuth">
       <mat-list-item
         ><span routerLink="/" routerLinkActive="active"
-          >Home</span
+          >Inicio</span
         ></mat-list-item
       >
-      <mat-list-item
-        ><span routerLink="/login" routerLinkActive="active">Login</span>
-        <mat-icon
-          class="example-icon"
-          aria-hidden="false"
-          aria-label="Example user verified icon"
-          >verified_user</mat-icon
-        ></mat-list-item
-      >
+      <mat-list-item>
+        <span routerLink="/login" routerLinkActive="active">Acceso</span>
+      </mat-list-item>
     </mat-list>
   </mat-sidenav>
   <mat-sidenav-content>
