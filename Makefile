@@ -7,17 +7,13 @@ backend:
 db:
 	docker-compose up --build -d --force-recreate db
 
-<<<<<<< HEAD
 pgadmin:
 	docker-compose up --build -d --force-recreate pgadmin
 
-leones:
-=======
 db-build:
 	docker-compose build db
 
-leones: 
->>>>>>> origin/develop
+leones:
 	docker-compose up -d
 
 leones-down:
