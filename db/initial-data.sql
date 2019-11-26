@@ -10,4 +10,4 @@ CREATE TABLE users
   reg_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO users (email, password, name, lastName, birthDate) VALUES ('diego@corral.com', 'password', 'Diego', 'del Corral', '2016-12-20');
+INSERT INTO users (email, password, name, lastName, birthDate) VALUES ('admin@leones', '$2a$10$kB/sAqniLVwrqAPFmn0EwO2cv624qzHXFUe/olXOOQoFIJAbCZNwC', 'Diego', 'del Corral', '2016-12-20');
