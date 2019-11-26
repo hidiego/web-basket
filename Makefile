@@ -2,7 +2,7 @@ frontend:
 	docker-compose up --build -d --force-recreate frontend
 
 backend:
-	docker-compose up -d --force-recreate backend
+	docker-compose up --build -d --force-recreate backend
 
 db:
 	docker-compose up --build -d --force-recreate db

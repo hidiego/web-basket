@@ -4,6 +4,7 @@ var logger = require('morgan');
 var cors = require('cors');
 
 var usersRouter = require('./routes/users');
+var rolesRouter = require('./routes/roles');
 
 var errorHandler = require('./errors/errorHandler');
 
@@ -16,6 +17,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use('/users', usersRouter);
+app.use('/roles', rolesRouter);
 
 app.use(errorHandler);
 

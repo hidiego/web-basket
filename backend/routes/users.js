@@ -6,7 +6,7 @@ var bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
 var auth = require('../middleware/auth');
 
-/* GET users listing. */
+// GET
 router.get('/all', async (req, res, next) => {
   try {
     const users = await db.getAll();
@@ -18,12 +18,28 @@ router.get('/all', async (req, res, next) => {
   }
 });
 
+router.get('/getUser/:email', auth, async (req, res, next) => {
+  try {
+    var email = req.params.email;
+    user = await db.getUser(email);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'User fetched successfully',
+      data: user
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// POST
 router.post('/login', async (req, res, next) => {
   try {
     let { email, password } = req.body;
     email = email.toLowerCase();
     var user = await db.getFull(email);
-    const token = jwt.sign({ email: user.email }, 'secret', {
+    const token = jwt.sign({ email: user.email, role: user.role }, 'secret', {
       expiresIn: '1h'
     });
     // compare hashed password
@@ -57,21 +73,6 @@ router.post('/register', auth, async (req, res, next) => {
     res.status(200).json({
       status: 0,
       message: `User ${user.email} registered successfully`,
-      data: user
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get('/getUser/:email', auth, async (req, res, next) => {
-  try {
-    var email = req.params.email;
-    user = await db.getUser(email);
-
-    res.status(200).json({
-      status: 'success',
-      message: 'User fetched successfully',
       data: user
     });
   } catch (error) {
