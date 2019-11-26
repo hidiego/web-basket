@@ -1,0 +1,30 @@
+<h3>Registrar usuario</h3>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <input
+    formControlName="name"
+    type="text"
+    placeholder="Nombre"
+    style="display: block;"
+  />
+  <input
+    formControlName="lastName"
+    type="text"
+    placeholder="Apellidos"
+    style="display: block;"
+  />
+  <input
+    formControlName="email"
+    type="email"
+    placeholder="Correo electrónico"
+    style="display: block;"
+  />
+  <input
+    formControlName="birthDate"
+    type="date"
+    placeholder="Fecha de nacimiento"
+    style="display: block;"
+  />
+  <button type="submit" [disabled]="!registerForm.valid">Entrar</button>
+</form>
+
+<p>Form Status: {{ registerForm.status }}</p>

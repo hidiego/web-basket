@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,11 @@ import { Subscription } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
   header: string;
-  constructor(public fb: FormBuilder, private route: Router) {}
+  constructor(
+    public fb: FormBuilder,
+    private route: Router,
+    private us: UserService
+  ) {}
   loginForm = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required]]
@@ -22,6 +27,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.warn(this.loginForm.value);
+    this.us.login(this.loginForm.value);
   }
 }
