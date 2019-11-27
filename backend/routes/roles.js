@@ -4,7 +4,7 @@ var db = require('../db-queries/roles');
 var auth = require('../middleware/auth');
 
 /* GET users listing. */
-router.get('/all', async (req, res, next) => {
+router.get('/all', auth, async (req, res, next) => {
   try {
     const roles = await db.getAll();
     res.status(200).json({
@@ -17,7 +17,7 @@ router.get('/all', async (req, res, next) => {
   }
 });
 
-router.get('/getRole/:id', async (req, res, next) => {
+router.get('/getRole/:id', auth, async (req, res, next) => {
   try {
     const id = req.params.id;
     const role = await db.getRole(id);

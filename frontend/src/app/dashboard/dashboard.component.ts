@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
+import { User } from '../models/User.model';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  user: User;
+  constructor(private us: UserService) {}
 
-  constructor() { }
-
-  ngOnInit() {
+  async ngOnInit() {
+    console.log('EMAIL', this.us.getEmail());
+    this.user = await this.us.getUserDB(this.us.getEmail());
+    console.log(this.user);
   }
-
 }

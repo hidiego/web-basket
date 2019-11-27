@@ -24,7 +24,25 @@
     placeholder="Fecha de nacimiento"
     style="display: block;"
   />
+  <select
+    *ngIf="roles != undefined"
+    style="display: block;"
+    formControlName="role"
+  >
+    <option *ngFor="let role of roles" type="number" value="{{ role.id }}">{{
+      role.display_name
+    }}</option>
+  </select>
+  <input
+    *ngIf="registerForm.value.role == 3"
+    formControlName="playerNumber"
+    type="number"
+    placeholder="Numero de jugador"
+    style="display: block;"
+  />
   <button type="submit" [disabled]="!registerForm.valid">Entrar</button>
 </form>
+
+{{ registerForm.value.role }}
 
 <p>Form Status: {{ registerForm.status }}</p>

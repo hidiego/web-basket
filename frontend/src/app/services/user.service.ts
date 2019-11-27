@@ -10,18 +10,15 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  url = environment.backendUrl + '/users';
+  private userUrl = environment.backendUrl + '/users';
+  private roleUrl = environment.backendUrl + '/roles';
   private isAuthenticated = false;
-  token = null;
-  user: User;
-  email: string;
+  private token = null;
+  private user: User;
+  private email: string;
   private tokenTimer: any;
   private authStatusListener = new Subject<any>();
-  constructor(
-    private http: HttpClient,
-    private sb: MatSnackBar,
-    private router: Router
-  ) {}
+  constructor(private http: HttpClient, private sb: MatSnackBar, private router: Router) {}
 
   getToken() {
     return this.token;
@@ -44,7 +41,7 @@ export class UserService {
   }
 
   register(user: User) {
-    this.http.post<any>(this.url + '/register', user).subscribe(
+    this.http.post<any>(this.userUrl + '/register', user).subscribe(
       response => {
         this.sb.open(response.message, 'close', {
           duration: 5000,
@@ -58,12 +55,13 @@ export class UserService {
   }
 
   login(form: { email: string; password: string }) {
-    this.http.post<any>(this.url + '/login', form).subscribe(
+    this.http.post<any>(this.userUrl + '/login', form).subscribe(
       response => {
         console.log(response);
         this.token = response.data.token;
         if (this.token) {
           const expiresIn = response.data.expiresIn;
+          this.email = response.data.user.email;
           this.setAuthTimer(expiresIn);
           this.isAuthenticated = true;
           this.user = response.data.user;
@@ -82,37 +80,47 @@ export class UserService {
     );
   }
 
-  getUserDB(email: string): any {
-    this.http.get<any>(this.url + '/getUser/' + email).subscribe(response => {
-      return response.data;
-    });
+  async getUserDB(email: string) {
+    return this.http
+      .get<any>(this.userUrl + '/getUser/' + email)
+      .toPromise()
+      .then(response => {
+        this.user = response.data;
+        return response.data;
+      });
   }
 
-  async autoAuthUser() {
+  // ROLES
+  async getRoles() {
+    return this.http
+      .get<any>(this.roleUrl + '/all')
+      .toPromise()
+      .then(response => {
+        return response.data;
+      });
+  }
+
+  autoAuthUser() {
     const authInfo = this.getAuthData();
-    console.log(authInfo);
     if (!authInfo) {
       return;
     }
     const now = new Date();
     const expiresIn = authInfo.expiration.getTime() - now.getTime();
-    console.log(expiresIn);
     if (expiresIn > 0) {
+      console.log('AUTO AUTH');
       this.token = authInfo.token;
       this.email = authInfo.email;
-      this.user = this.getUserDB(this.email);
+      this.getUserDB(this.email);
       this.isAuthenticated = true;
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
     }
-    const message = `Tu sesion estará activa ${Math.floor(
-      expiresIn / 60000
-    )} minutos`;
+    const message = `Tu sesion estará activa ${Math.floor(expiresIn / 60000)} minutos`;
     this.showSnakBar(message);
   }
 
   private setAuthTimer(duration: number) {
-    console.log('SET AUTH TIMER');
     this.tokenTimer = setTimeout(() => {
       this.logout();
     }, duration * 1000);
@@ -130,24 +138,19 @@ export class UserService {
   }
 
   private clearAuthData() {
-    console.log('CLEAR AUTH DATA');
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
     localStorage.removeItem('email');
   }
 
   private saveAuthData(token: string, expirationDate: Date, email: string) {
-    console.log('SAVE AUTH DATA');
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
-    console.log(email);
     localStorage.setItem('email', email);
     const emailtmp = localStorage.getItem('email');
-    console.log(emailtmp);
   }
 
   private getAuthData() {
-    console.log('GET AUTH DATA');
     const token = localStorage.getItem('token');
     const expiration = localStorage.getItem('expiration');
     const email = localStorage.getItem('email');

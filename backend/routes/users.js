@@ -64,12 +64,20 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/register', auth, async (req, res, next) => {
   try {
-    let { email, name, lastName, birthDate } = req.body;
+    let { email, name, lastName, birthDate, role, playerNumber } = req.body;
     email = email.toLowerCase();
     let password = pg.generatePassword();
     console.log('PASSWORD', password);
     password = await bcrypt.hashSync(password);
-    const user = await db.register(email, password, name, lastName, birthDate);
+    const user = await db.register(
+      email,
+      role,
+      password,
+      name,
+      lastName,
+      birthDate,
+      playerNumber
+    );
     res.status(200).json({
       status: 0,
       message: `User ${user.email} registered successfully`,

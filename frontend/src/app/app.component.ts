@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from './services/user.service';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from "@angular/core";
+import { UserService } from "./services/user.service";
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
-  title = 'leones';
-  mode = 'over';
+  title = "CLUB";
+  mode = "over";
   isAuth = false;
   private authListenerSubs: Subscription;
   constructor(private us: UserService) {}

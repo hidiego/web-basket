@@ -1,14 +1,25 @@
 const db = require('../db-connector');
 
 function getAll() {
-  return db.many(`select id, name, lastName, email, reg_date, birthDate from users`);
+  return db.many(
+    `select id, name, role, lastName, email, regDate, birthDate from users`
+  );
 }
 
-function register(email, password, name, lastName, birthDate) {
+function register(
+  email,
+  role,
+  password,
+  name,
+  lastName,
+  birthDate,
+  playerNumber
+) {
+  palyerNumber = playerNumber === null ? 'null' : `'${playerNumber}'`;
   return db.one(
-    `INSERT INTO users (email, password, name, lastName, birthDate) \
-    VALUES ('${email}', '${password}', '${name}',' ${lastName}', '${birthDate}') \
-    returning id, email, name, lastName, birthDate`
+    `INSERT INTO users (email, role, password, name, lastName, birthDate, playerNumber) \
+    VALUES ('${email}',${role}, '${password}', '${name}',' ${lastName}', '${birthDate}', null) \
+    returning id, email, role, name, lastName, birthDate`
   );
 }
 
@@ -18,7 +29,7 @@ function getFull(email) {
 
 function getUser(email) {
   return db.one(
-    `select id, email, name, lastName, birthDate, reg_date from users where email = '${email}'`
+    `select id, email, role, name, lastName, birthDate, regDate from users where email = '${email}'`
   );
 }
 

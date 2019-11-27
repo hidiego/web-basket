@@ -1,1 +1,7 @@
-<p>dashboard works!</p>
+<div *ngIf="user">
+  <span> Hola {{ user.name }} {{ user.lastName }} </span> <br />
+  <span routerLink="/register" routerLinkActive="active" *ngIf="user.role === 0; else notAdmin"
+    >Registrar Jugador</span
+  >
+  <ng-template #notAdmin>No tienes nada.</ng-template>
+</div>
